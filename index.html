@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Left Side Tabs</title>
+    <style>
+        /* General body styling */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Header styling */
+        .header {
+            background-color: #f6c12a; /* Yellow background */
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* Tab menu styling */
+        .tab-menu {
+            height: 100vh;
+            width: 200px;
+            background-color: #4712f6; /* Blue background */
+            position: fixed;
+            top: 80px; /* Adjusted to be below the header */
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+        }
+
+        /* Tab menu links styling */
+        .tab-menu a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            width: 81%;
+            margin: 5px 0;
+            display: block;
+            cursor: pointer;
+        }
+
+        /* Hover effect */
+        .tab-menu a:hover {
+            background-color: #68b300;
+        }
+
+        /* Content section styling */
+        .tab-content {
+            margin-left: 200px;
+            padding: 100px 20px 20px 20px; /* Adjusted for header height */
+        }
+
+        /* Table styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body onload="showStudentDetails()">
+
+    <div class="header">
+        Saraswati Shishu Vidya Mandir
+    </div>
+
+    <div class="tab-menu">
+        <a href="#" onclick="showStudentDetails()">Student</a>
+        <a href="#" onclick="showTeacherContent()">Teacher</a>
+        <a href="#" onclick="showClassesContent()">Classes</a>
+    </div>
+
+    <div class="tab-content" id="content">
+        <!-- Content will be dynamically loaded here -->
+    </div>
+
+    <script>
+        function showStudentDetails() {
+            // Clear previous content
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '<h2>Loading...</h2>';
+
+            // Simulate API call
+            fetch('https://nc47u17uka.execute-api.ap-south-1.amazonaws.com/demo/test')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data : ",data);
+                    // Create a table to display student details
+                    let table = `<h2>Student Tab Content</h2>
+                                 <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Father Name</th>
+                                            <th>Mother Name</th>
+                                            <th>Standard</th>
+                                            <th>Gender</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+                    
+                    data["body-json"]['body'].forEach(student => {
+                        table += `<tr>
+                                    <td>${student.admission_no}</td>
+                                    <td>${student.name.toUpperCase()}</td>
+                                    <td>${student.father_name.toUpperCase()}</td>
+                                    <td>${student.mother_name.toUpperCase()}</td>                                    
+                                    <td>${student.standard.toUpperCase()}</td>                                    
+                                    <td>${student.gender.toUpperCase()}</td>
+                                    </tr>`;
+                    });
+
+                    table += `</tbody></table>`;
+                    contentDiv.innerHTML = table;
+                })
+                .catch(error => {
+                    contentDiv.innerHTML = `<p>Error loading student details. Please try again later.</p>`;
+                    console.error('Error fetching student details:', error);
+                });
+        }
+
+        function showTeacherContent() {
+            // Clear previous content
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = '<h2>Loading...</h2>';
+
+            // Simulate API call
+            fetch('https://nc47u17uka.execute-api.ap-south-1.amazonaws.com/demo/test')
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data : ",data);
+                    // Create a table to display teacher details
+                    let table = `<h2>Teacher Tab Content</h2>
+                                 <table>
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Name</th>
+                                            <th>Father Name</th>
+                                            <th>Mother Name</th>
+                                            <th>Standard</th>
+                                            <th>Gender</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+                    
+                    data["body-json"]['body'].forEach(teacher => {
+                        table += `<tr>
+                                    <td>${teacher.admission_no}</td>
+                                    <td>${teacher.name.toUpperCase()}</td>
+                                    <td>${teacher.father_name.toUpperCase()}</td>
+                                    <td>${teacher.mother_name.toUpperCase()}</td>                                    
+                                    <td>${teacher.standard.toUpperCase()}</td>                                    
+                                    <td>${teacher.gender.toUpperCase()}</td>
+                                    </tr>`;
+                    });
+
+                    table += `</tbody></table>`;
+                    contentDiv.innerHTML = table;
+                })
+                .catch(error => {
+                    contentDiv.innerHTML = `<p>Error loading teacher details. Please try again later.</p>`;
+                    console.error('Error fetching teacher details:', error);
+                });
+        }
+
+        function showClassesContent() {
+            const contentDiv = document.getElementById('content');
+            contentDiv.innerHTML = `<h2>Classes Tab Content</h2>
+                                    <p>This is the content for the Classes tab.</p>`;
+        }
+    </script>
+
+</body>
+</html>
