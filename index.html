@@ -78,6 +78,22 @@
         th {
             background-color: #f5f5f5;
         }
+
+        /* Button styling */
+        .add-button {
+            background-color: #68b300;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+            margin-bottom: 10px;
+        }
+
+        .add-button:hover {
+            background-color: #5aa000;
+        }
     </style>
 </head>
 <body onload="showStudentDetails()">
@@ -103,12 +119,21 @@
             contentDiv.innerHTML = '<h2>Loading...</h2>';
 
             // Simulate API call
-            fetch('https://nc47u17uka.execute-api.ap-south-1.amazonaws.com/demo/test')
+            fetch('https://students-mangement-system-backend.onrender.com/getStudents' ,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+                
+            })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("Data : ",data);
+                    // Create the Add Student button
+                    let addButton = `<button class="add-button" onclick="addStudent()">Add Student</button>`;
+
                     // Create a table to display student details
                     let table = `<h2>Student Tab Content</h2>
+                                 ${addButton}
                                  <table>
                                     <thead>
                                         <tr>
@@ -119,16 +144,16 @@
                                             <th>Standard</th>
                                             <th>Gender</th>
                                         </tr>
-                                    </thead>
+                                    </thead> 
                                     <tbody>`;
                     
-                    data["body-json"]['body'].forEach(student => {
+                    data.forEach(student => {
                         table += `<tr>
                                     <td>${student.admission_no}</td>
                                     <td>${student.name.toUpperCase()}</td>
                                     <td>${student.father_name.toUpperCase()}</td>
                                     <td>${student.mother_name.toUpperCase()}</td>                                    
-                                    <td>${student.standard.toUpperCase()}</td>                                    
+                                    <td>${student.standard}</td>                                    
                                     <td>${student.gender.toUpperCase()}</td>
                                     </tr>`;
                     });
@@ -148,33 +173,43 @@
             contentDiv.innerHTML = '<h2>Loading...</h2>';
 
             // Simulate API call
-            fetch('https://nc47u17uka.execute-api.ap-south-1.amazonaws.com/demo/test')
+            fetch('https://students-mangement-system-backend.onrender.com/getTeachers' ,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+                
+            })
                 .then(response => response.json())
                 .then(data => {
                     console.log("Data : ",data);
+                    // Create the Add Teacher button
+                    let addButton = `<button class="add-button" onclick="addTeacher()">Add Teacher</button>`;
+
                     // Create a table to display teacher details
                     let table = `<h2>Teacher Tab Content</h2>
+                                 ${addButton}
                                  <table>
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>Staff Id</th>
                                             <th>Name</th>
-                                            <th>Father Name</th>
-                                            <th>Mother Name</th>
-                                            <th>Standard</th>
+                                            <th>Qualification</th>
+                                            <th>Phone</th>
+                                            <th>Subject</th>
                                             <th>Gender</th>
                                         </tr>
                                     </thead>
                                     <tbody>`;
                     
-                    data["body-json"]['body'].forEach(teacher => {
+                    data.forEach(teacher => {
                         table += `<tr>
-                                    <td>${teacher.admission_no}</td>
+                                    <td>${teacher.staff_id}</td>
                                     <td>${teacher.name.toUpperCase()}</td>
-                                    <td>${teacher.father_name.toUpperCase()}</td>
-                                    <td>${teacher.mother_name.toUpperCase()}</td>                                    
-                                    <td>${teacher.standard.toUpperCase()}</td>                                    
-                                    <td>${teacher.gender.toUpperCase()}</td>
+                                    <td>${teacher.qualification}</td>
+                                    <td>${teacher.phone}</td>                                    
+                                    <td>${teacher.subject}</td>                                    
+                                    <td>${teacher.gender}</td>
                                     </tr>`;
                     });
 
@@ -191,6 +226,16 @@
             const contentDiv = document.getElementById('content');
             contentDiv.innerHTML = `<h2>Classes Tab Content</h2>
                                     <p>This is the content for the Classes tab.</p>`;
+        }
+
+        // Dummy functions for button actions
+        function addStudent() {
+            window.location.href = 'add_students.html';
+            // alert('Add Student button clicked!');
+        }
+
+        function addTeacher() {
+            window.location.href = 'add_teacher.html';
         }
     </script>
 

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Teacher</title>
+</head>
+<body style="background-color: white; color: black; font-family: Arial, sans-serif">
+    <main style="padding-left: 60px; padding-top: 50px; display: flex; justify-content: center;">
+        <form id="addForm" style="width: 400px; padding: 20px; background-color: grey; border-radius: 8px; box-shadow: 2 4px 8px rgba(0, 0, 0, 0.1);">
+            <label for="staff_id">Staff ID: </label><br>
+            <input type="number" id="staff_id" name="staff_id" required style="width: 90%; padding: 10px; margin-bottom: 20px;"><br>
+
+            <label for="name">Name: </label><br>
+            <input type="text" id="name" name="name" required style="width: 90%; padding: 10px; margin-bottom: 20px;"><br>
+    
+            <label for="qualification">Qualification: </label><br>
+            <input type="text" id="qualification" name="qualification" required style="width: 90%; padding: 10px; margin-bottom: 20px;"><br>
+            
+            <label for="phone">Phone: </label><br>
+            <input type="text" id="phone" name="phone" required style="width: 90%; padding: 10px; margin-bottom: 20px;"><br>
+            
+            <label for="subject">Subject: </label><br>
+            <input type="text" id="subject" name="subject" required style="width: 90%; padding: 10px; margin-bottom: 20px;"><br>
+            
+            <label for="gender">Gender: </label><br>
+            <input type="text" id="gender" name="gender" required style="width: 90%; padding: 10px; margin-bottom: 20px;"><br>
+            
+            <input type="submit" value="Submit" style="width: 95%; padding: 12px;">
+        </form>
+    </main>
+
+    <script>
+
+        function clear_form(){
+            document.getElementById("addForm").reset();
+        }
+
+        document.getElementById('addForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting the traditional way
+            
+            // Collect form data
+            const formData = {
+                staff_id: document.getElementById('staff_id').value,
+                name: document.getElementById('name').value,
+                qualification: document.getElementById('qualification').value,
+                phone: document.getElementById('phone').value,
+                subject: document.getElementById('subject').value,
+                gender: document.getElementById('gender').value
+            };
+
+            // Convert the form data to JSON
+            const jsonData = JSON.stringify(formData);
+            console.log("Form Data:", jsonData);
+
+            // Send the JSON data to the backend using POST method
+            fetch('https://students-mangement-system-backend.onrender.com/addTeachers', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data["statusCode"] == 200) {
+                    alert("Added successfully");
+                } else if (["statusCode"] == 400 || data["body-json"]["statusCode"] == 500) {
+                    alert("Submission failed!");
+                }
+                clear_form();
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Submission failed!');
+            });
+        });
+    </script>
+</body>
+</html>
